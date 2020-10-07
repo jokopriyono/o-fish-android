@@ -187,7 +187,11 @@ class RepositoryImpl(
     }
 
     override fun getFlagStates(): List<String> {
-        val states = localDataSource.getFlagStates().toMutableList()
+        val fromMapToList = localDataSource.getFlagStates().toMutableMap()
+        val states = mutableListOf<String>()
+        fromMapToList.map {
+            states.add("${it.value} (${it.key})")
+        }
         val prior = getMenuData()?.countryPickerPriorityList?.map {
             val locale = Locale("", it)
             locale.displayCountry
